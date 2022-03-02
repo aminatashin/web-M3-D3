@@ -13,18 +13,26 @@
     <!-- 563492ad6f91700001000001a301c4942f1f4a34a722d47394e55c0b -->
 
 
-<img src="" alt="">
+
 
 <div class="container">
-    <div class="row">
-        <div class="col-6">
-<button onclick="loadPicture()"> load Image</button>
-<div id="flower" class="row">
+    <div class="row  mb-5">
+        <div class="col-12 col-sm-6 col-md-4 d-flex ">
 
+<button onclick="loadPicture()" class="btn btn-primary"> load Image</button>
+
+
+<select class="ml-3" id="categoryS" onchange="selectcategory(event.target.value)"></select>
+
+
+<input type="text" id="search" class="ml-5" placeholder="find your flower" >
 </div>
 </div>
 
-</div>
+<div id="flower" class="row"></div>
+
+
+
 </div>
 
 
@@ -33,6 +41,20 @@
 
     <script>
 const flowerPicture = document.querySelector('#flower')
+const getCategory = document.querySelector("#categoryS")
+
+const categories =["#CC9F93",'#221F21',"#826D66"]
+
+
+window.onload = () => {
+    getCategory.innerHTML = categories.map(category=>{
+        return `<Option value="${category}">${category}</option>`
+    })
+}
+function selectcategory ( category){
+    console.log(category)
+}
+
         function loadPicture() {
             fetch("https://api.pexels.com/v1/search?query=flowers", {
         headers: {
@@ -43,12 +65,18 @@ const flowerPicture = document.querySelector('#flower')
         .then((response) => response.json())
         .then(data => {
           console.log(data);
-         for (let pic of data.photos ){
-             flowerPicture.innerHTML +=
-            `  
+          flowerPicture.innerHTML = data.photos
+          .map(pic =>` 
+          <div class= "card col-12 col-sm-6 col-md-4 col-lg-3" >
             <img src="${pic.src.large}" alt="photo">
+            <div class= "card-body">
+            <h5 class="card-title">${pic.alt}</h5>
+            <p class="card-text"> ${pic.photographer}</p>
+            </div>
+
+            </div>
             `
-        }
+              ) .join("")
 
            
           
@@ -61,6 +89,14 @@ const flowerPicture = document.querySelector('#flower')
         })
         .catch((e) => console.log(e));
         }
+
+
+     
+
+
+
+
+
 
     </script>
 
