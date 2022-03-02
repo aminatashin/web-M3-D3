@@ -43,13 +43,12 @@ const flowerPicture = document.querySelector('#flower')
         .then((response) => response.json())
         .then(data => {
           console.log(data);
-         let pic = data.photos.src.original
-
-         flowerPicture.innerHTML +=
+         for (let pic of data.photos ){
+             flowerPicture.innerHTML +=
             `  
-            <img src="${pic}" alt="photo">
+            <img src="${pic.src.large}" alt="photo">
             `
-        
+        }
 
            
           
